@@ -33,23 +33,36 @@ namespace MyFunc {
     }
 
     void remove_dynamic_array_head(int*& arr, int & logical_size, int & actual_size) {
-        if(logical_size - 1 > actual_size / 3) {
-            for(int i = 0; i < logical_size; ++i) {
+        if (logical_size == 0) {
+            return;
+        }
+        auto logical_size_new = logical_size - 1;
+
+        if (logical_size_new == 0) {
+            delete[] arr;
+            arr = nullptr;
+            logical_size = 0;
+            actual_size = 1;
+            return;
+        }
+
+        if(logical_size_new > actual_size / 3) {
+            for(int i = 0; i < logical_size_new; ++i) {
                 arr[i] = arr[i+1];
             }
-            arr[logical_size--] = 0;    
         }
         else {
-            int* arr_new = new int[actual_size / 3];
-            for(int i = 0; i < logical_size - 1; ++i) {
+            auto actual_size_new = actual_size / 3;
+            int* arr_new = new int[actual_size_new];
+            for(int i = 0; i < logical_size_new; ++i) {
                 arr_new[i] = arr[i+1];
             }
-            actual_size /= 3;
-            logical_size--;
+            actual_size = actual_size_new;
             delete[] arr;
             arr = arr_new;
             arr_new = nullptr;
         }    
+        logical_size = logical_size_new;
 
     }
 
